@@ -163,6 +163,14 @@ public class Kochbuch extends JFrame implements WindowListener {
 // Funktionalität Neu -> Anzeige Eingabepanel
 		menueItemNeu.addActionListener(e -> {
 			((CardLayout) container.getLayout()).show(container, nameEingabePanel);
+			// es wird ein Rezept-Objekt erzeugt
+			rezept_neu = new Rezept();
+			textFieldRezeptName.setEnabled(true);
+			textFieldZutat.setEnabled(true);
+			textFieldMenge.setEnabled(true);
+			textAreaZubereitung.setEnabled(true);
+			butHinzufuegen.setEnabled(true);
+			butSpeichern.setEnabled(true);
 		});
 // Funktionalität Alle anzeigen -> Anzeige Indexpanel über Methode alleRezepteAnzeigen(),
 // d.h. RezeptListModel wird geleert und neu gefüllt
@@ -186,10 +194,9 @@ public class Kochbuch extends JFrame implements WindowListener {
 	}
 // -------------------------------------Ende Menü Rezept erzeugen-------------------------
 
-	private JPanel erzeugeEingabePanel() {
+//-------------------------------------Eingabepanel erzeugen------------------------------
 
-		// es wird ein Rezept-Objekt erzeugt
-		rezept_neu = new Rezept();
+	private JPanel erzeugeEingabePanel() {
 
 		JPanel eingabePanel = new JPanel();
 		eingabePanel.setSize(350, 200);
@@ -208,7 +215,6 @@ public class Kochbuch extends JFrame implements WindowListener {
 		eingabePanel.add(textFieldMenge);
 // Hinzufügen
 		butHinzufuegen = new JButton("Zutat hinzufügen");
-		ArrayList<Zutat> zutatenliste = new ArrayList<Zutat>();
 // ich werde bei diesem Buttun nur das Zutatenarray erzeugen, das Rezept kommt erst beim Speichern-Button
 		butHinzufuegen.addActionListener(e -> {
 			// der Rezeptname wird hinzugefügt
@@ -255,93 +261,13 @@ public class Kochbuch extends JFrame implements WindowListener {
 		textFieldRezeptName.setText("");
 		textAreaZubereitung.setText("");
 		model.clear();
+		textFieldRezeptName.setEnabled(false);
+		textFieldZutat.setEnabled(false);
+		textFieldMenge.setEnabled(false);
+		textAreaZubereitung.setEnabled(false);
+		butHinzufuegen.setEnabled(false);
+		butSpeichern.setEnabled(false);
 	}
-
-	// Hier geht es ums Eingabepanel
-	// private JPanel erzeugeEingabePanel() {
-	// JPanel eingabePanel = new JPanel();
-	// eingabePanel.setSize(350, 200);
-	// eingabePanel.setLayout(new BorderLayout());
-	// JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-	// JPanel eingabeMaske = erzeugeEingabeMaske();
-	// splitPane.setLeftComponent(eingabeMaske);
-	// JPanel anzeigeFeld = erzeugeAnzeigeFeld();
-	// splitPane.setRightComponent(anzeigeFeld);
-	// eingabePanel.add(splitPane);
-	// return eingabePanel;
-	// }
-
-	// private JPanel erzeugeEingabeMaske() {
-	// JPanel eingabeMaske = new JPanel(new CardLayout());
-	// JPanel panel1 = new JPanel();
-	// panel1Name = "panel1Name";
-	// panel1.add(new JLabel("Bitte geben Sie den Rezeptnamen ein"));
-	// textFieldRezeptName = new JTextField(40);
-	// panel1.add(textFieldRezeptName);
-	// speichern1Button = new JButton("speichern");
-	// speichern1Button.addActionListener(e -> {
-	// // es wird ein Rezept-Objekt erzeugt
-	// rezept = new Rezept();
-	// rezept.setRezeptName(textFieldRezeptName.getText());
-	// textFieldRezeptName.setText("");
-	// ((CardLayout) eingabeMaske.getLayout()).show(eingabeMaske, panel2Name);
-	// System.out.println(rezept.getRezeptName());
-	// });
-	// panel1.add(speichern1Button);
-	// eingabeMaske.add(panel1, panel1Name);
-	//
-	// JPanel panel2 = new JPanel();
-	// panel2Name = "panel2Name";
-	// panel2.add(new JLabel("Bitte beschreiben Sie die Zubereitung des Gerichts"));
-	// textAreaZubereitung = new JTextArea(20, 20);
-	// textAreaZubereitung.setLineWrap(true);
-	// panel2.add(textAreaZubereitung);
-	// JButton speichern2Button = new JButton("speichern");
-	// speichern2Button.addActionListener(e -> {
-	// // Der Zubereitungstext wird zum rezept-Objekt hinzugefügt
-	// rezept.setZubereitung(textAreaZubereitung.getText());
-	// textAreaZubereitung.setText("");
-	// System.out.println(rezept.getZubereitung().toString());
-	// ((CardLayout) eingabeMaske.getLayout()).show(eingabeMaske, panel3Name);
-	// });
-	// panel2.add(speichern2Button);
-	// eingabeMaske.add(panel2, panel2Name);
-	//
-	// JPanel panel3 = new JPanel();
-	// panel3Name = "panel3Name";
-	// // Label und Textfeld für Zutat, sowie Menge
-	// // Speichern-Button für Zutat und Menge
-	// // Rezept speichern-Button
-	// panel3.add(new JLabel("Bitte geben Sie die Zutat ein"));
-	// textFieldZutat = new JTextField(20);
-	// panel3.add(textFieldZutat);
-	// panel3.add(new JLabel("Bitte geben Sie die Menge ein"));
-	// textFieldMenge = new JTextField(20);
-	// panel3.add(textFieldMenge);
-	// JButton speichern3aButton = new JButton("Zutat speichern");
-	// speichern3aButton.addActionListener(e -> {
-	// // Zutat und Menge speichern
-	// rezept.getZutatenListe().add(new Zutat((textFieldZutat.getText()),
-	// (textFieldMenge.getText())));
-	// textFieldZutat.setText("");
-	// textFieldMenge.setText("");
-	// rezept.getZutatenListe().forEach(z -> System.out.println(z.getName()));
-	// });
-	// panel3.add(speichern3aButton);
-	// panel3.add(new JLabel("Wenn Sie mit der Eingabe der Zutaten fertig sind,
-	// speichern Sie das Rezept"));
-	// JButton speichern3bButton = new JButton("Rezept speichern");
-	// speichern3bButton.addActionListener(e -> {
-	// // Rezept speichern
-	// kochbuch.add(rezept);
-	// kochbuch.forEach(r -> System.out.println(r.getRezeptName()));
-	// ((CardLayout) eingabeMaske.getLayout()).show(eingabeMaske, panel1Name);
-	// });
-	// panel3.add(speichern3bButton);
-	//
-	// eingabeMaske.add(panel3, panel3Name);
-	// return eingabeMaske;
-	// }
 
 // -------------------------------------------------Rezeptindexpanel erzeugen----------------------------------------
 // Hier wird der Rezeptindex erzeugt
@@ -386,7 +312,6 @@ public class Kochbuch extends JFrame implements WindowListener {
 					}
 // dann muss der entsprechende Listeneintrag markiert werden
 				});
-				System.out.println(namenSuche.getText());
 			}
 		});
 
@@ -418,12 +343,6 @@ public class Kochbuch extends JFrame implements WindowListener {
 		rezepteIndexPanel.add(buttonPanel, BorderLayout.SOUTH);
 
 		return rezepteIndexPanel;
-	}
-
-	private JPanel erzeugeAnzeigeFeld() {
-		JPanel anzeigeFeld = new JPanel();
-		anzeigeFeld.add(new JButton());
-		return anzeigeFeld;
 	}
 
 	private void einlesen(File file) {
@@ -516,7 +435,6 @@ public class Kochbuch extends JFrame implements WindowListener {
 	}
 
 	private void speichereKochbuch() {
-		System.out.println("Kochbuch speichern");
 // JFileChooser-Objekt erstellen
 		JFileChooser chooser = new JFileChooser();
 		chooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
