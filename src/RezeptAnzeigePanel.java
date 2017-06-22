@@ -22,13 +22,10 @@ public class RezeptAnzeigePanel extends JPanel {
 		this.add(new JLabel("Zubereitung"));
 		zubereitung = new JTextArea(100, 100);
 		zubereitung.setLineWrap(true);
-		zubereitung.setWrapStyleWord(true);
- 
-//        add(new JScrollPane(zubereitung));
-		
+		zubereitung.setWrapStyleWord(true); 
+//      add(new JScrollPane(zubereitung));		
 		this.add(zubereitung);
-	}
-	
+	}	
 
 	public void updatePanel(Rezept r){
 		rezeptName.setText(r.getRezeptName());

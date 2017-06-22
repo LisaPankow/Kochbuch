@@ -36,4 +36,9 @@ public class Zutat implements Serializable {
 	public void setMenge(String menge) {
 		this.menge = menge;
 	}
+
+	@Override
+	public String toString() {
+		return "Zutat [name=" + name + ", menge=" + menge + "]";
+	}
 }
