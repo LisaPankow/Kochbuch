@@ -140,8 +140,15 @@ public class Kochbuch extends JFrame implements WindowListener {
 		});
 // 3. Beenden – das Programm wird beendet.
 		menueItemBeenden.addActionListener(e -> {
-			beendenAbfrage();
-			System.exit(0);
+			// 1. Dialog: Wollen Sie?
+			// ja: speichern, beenden
+			// nein: nichts
+			// abbrechen: nichts
+
+			if (menueItemSpeichern.isEnabled() == true) {
+				beendenAbfrage();
+			} else System.exit(0);
+
 		});
 // die drei MenüItems werden dem Menü "Kochbuch" hinzugefügt
 		menueKochbuch.add(menueItemLaden);
@@ -194,7 +201,7 @@ public class Kochbuch extends JFrame implements WindowListener {
 	}
 // -------------------------------------Ende Menü Rezept erzeugen-------------------------
 
-//-------------------------------------Eingabepanel erzeugen------------------------------
+// -------------------------------------Eingabepanel erzeugen------------------------------
 
 	private JPanel erzeugeEingabePanel() {
 
@@ -267,6 +274,7 @@ public class Kochbuch extends JFrame implements WindowListener {
 		textAreaZubereitung.setEnabled(false);
 		butHinzufuegen.setEnabled(false);
 		butSpeichern.setEnabled(false);
+		menueItemSpeichern.setEnabled(true);
 	}
 
 // -------------------------------------------------Rezeptindexpanel erzeugen----------------------------------------
@@ -337,6 +345,7 @@ public class Kochbuch extends JFrame implements WindowListener {
 // das Löschen wird nicht an das rezeptListModel übermittelt das müsste in einem echten Programm anders sein. Wie geht
 // das?
 				alleRezepteAnzeigen();
+				menueItemSpeichern.setEnabled(true);
 			}
 		});
 		buttonPanel.add(rezeptLoeschen);
@@ -393,8 +402,9 @@ public class Kochbuch extends JFrame implements WindowListener {
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		beendenAbfrage();
-
+		if (menueItemSpeichern.isEnabled() == true) {
+			beendenAbfrage();
+		} else System.exit(0);
 	}
 
 	@Override
@@ -431,6 +441,9 @@ public class Kochbuch extends JFrame implements WindowListener {
 		int rueckgabeWert = JOptionPane.showConfirmDialog(null, "Möchten Sie das Kochbuch vor dem Beenden speichern?");
 		if (rueckgabeWert == JOptionPane.YES_OPTION) {
 			speichereKochbuch();
+			System.exit(0);
+		} else if (rueckgabeWert == JOptionPane.NO_OPTION) {
+			System.exit(0);
 		}
 	}
 
@@ -447,6 +460,7 @@ public class Kochbuch extends JFrame implements WindowListener {
 			// .......... mit ausgewähltem File abspeichern
 			speichern(file);
 		}
+		menueItemSpeichern.setEnabled(false);
 	}
 
 	private void ladeKochbuch() {
@@ -459,6 +473,7 @@ public class Kochbuch extends JFrame implements WindowListener {
 			// Kochbuch aus ausgewähltem File laden
 			einlesen(file);
 		}
+		menueItemLaden.setEnabled(false);
 	}
 }
 
