@@ -11,7 +11,7 @@ public class Rezept implements Serializable {
 	private String rezeptName;
 	//vielleicht noch ändern in StringBuilder
 	private String zubereitung;
-	private ArrayList<Zutat> zutatenListe = new ArrayList<Zutat>();
+	ArrayList<Zutat> zutatenListe = new ArrayList<Zutat>();
 	
 	
 	
@@ -28,9 +28,9 @@ public class Rezept implements Serializable {
 	public void setZubereitung(String zubereitung) {
 		this.zubereitung = zubereitung;
 	}
-	public ArrayList<Zutat> getZutatenListe() {
-		return zutatenListe;
-	}
+//	public ArrayList<Zutat> getZutatenListe() {
+//		return zutatenListe;
+//	}
 	public void setZutatenListe(ArrayList<Zutat> zutatenListe) {
 		this.zutatenListe = zutatenListe;
 	}

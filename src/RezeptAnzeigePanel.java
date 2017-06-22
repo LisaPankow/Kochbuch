@@ -30,7 +30,8 @@ public class RezeptAnzeigePanel extends JPanel {
 	public void updatePanel(Rezept r){
 		rezeptName.setText(r.getRezeptName());
 		listenModell.clear();
-		r.getZutatenListe().forEach(z -> {
+//		r.getZutatenListe().forEach(z -> {
+		r.zutatenListe.forEach(z -> {
 			listenModell.addElement(""+z.getName().toString()+", "+z.getMenge().toString());		
 		});
 		zubereitung.setText(r.getZubereitung());

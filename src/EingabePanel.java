@@ -44,7 +44,7 @@ public class EingabePanel extends JPanel {
 // es wird ein Rezept-Objekt erzeugt
     		rezept = new Rezept();
     		rezept.setRezeptName(textFieldRezeptName.getText());
-    		hinzufuegen_Zutaten();
+    		hinzufuegen_zutat();
     	});
     	add(butHinzufuegen);     	
 //Zutaten JList    	
@@ -55,7 +55,6 @@ public class EingabePanel extends JPanel {
         jlist.setVisibleRowCount(5);
         jlist.setFixedCellWidth(200);
         add(scrollZutaten);
-
 // hier noch die Zubereitung
         add(new JLabel("Zubereitung"));
         textAreaZubereitung = new JTextArea(20, 20);
@@ -64,28 +63,34 @@ public class EingabePanel extends JPanel {
 //Button speichern
         butSpeichern = new JButton("Rezept speichern");
         butSpeichern.addActionListener(e->{
-//Rezept speichern und Zubereitung hinzufügen
-		rezept.setZubereitung(textAreaZubereitung.getText());
-		Kochbuch.kochbuch.add(rezept);
-//		kochb.add(rezept);
-		textFieldRezeptName.setText("");
-		textAreaZubereitung.setText("");
-		model.clear();
+        	speichern_rezept();
         });
         add(butSpeichern);
 		
 //      startPanel.validate();
 	}
 
-	private void hinzufuegen_Zutaten() {
+	private void hinzufuegen_zutat() {
 		String name =textFieldZutat.getText();
     	String menge =textFieldMenge.getText();
     	Zutat zutat = new Zutat(name, menge);
-    	rezept.getZutatenListe().add(zutat);	
+//    	rezept.getZutatenListe().add(zutat);
+    	rezept.zutatenListe.add(zutat);
     	model.addElement(zutat.toString());   	
     	textFieldZutat.setText("");
     	textFieldMenge.setText("");		
 	}
+	
+	private void speichern_rezept() {
+		//Rezept speichern und Zubereitung hinzufügen
+				rezept.setZubereitung(textAreaZubereitung.getText());
+				Kochbuch.kochbuch.add(rezept);
+		//		kochb.add(rezept);
+				textFieldRezeptName.setText("");
+				textAreaZubereitung.setText("");
+				model.clear();
+	}
+
 	
 	
 //		panel1.add(new JLabel("Bitte geben Sie den Rezeptnamen ein"));
