@@ -29,11 +29,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ToolTipManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import org.omg.Messaging.SyncScopeHelper;
 
 public class Kochbuch extends JFrame implements WindowListener {
 
@@ -93,7 +90,7 @@ public class Kochbuch extends JFrame implements WindowListener {
 		JPanel rezepteIndexPanel = erzeugeRezepteIndexPanel();
 		nameRezepteIndexPanel = "PanelRezepteIndex";
 		// Anzeige Rezept
-		RezeptAnzeigePanel rezeptAnzeigePanel = new RezeptAnzeigePanel();
+		rezeptAnzeigePanel = new RezeptAnzeigePanel();
 		nameRezeptAnzeigePanel = "PanelRezeptAnzeige";
 
 		// Layout des JFrames lisasKochbuch festlegen
