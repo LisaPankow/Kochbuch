@@ -44,25 +44,24 @@ public class Kochbuch extends JFrame implements WindowListener {
 	private Container container;
 	private String nameStartPanel;
 	private String nameEingabePanel;
-//	private JTextField textFieldRezeptName;
-//	private JButton speichern1Button;
-//	private String panel1Name;
-//	private String panel2Name;
-//	private String panel3Name;
-//	private Rezept rezept;
-//	private JTextArea textAreaZubereitung;
-//	private JTextField textFieldZutat;
-//	private JTextField textFieldMenge;
 	private String nameRezepteIndexPanel;
 	private String nameRezeptAnzeigePanel;
 	DefaultListModel<Rezept> rezeptListModel;
 	private RezeptAnzeigePanel rezeptAnzeigePanel;
+	private JTextField textFieldRezeptName;
+	private JTextField textFieldZutat;
+	private JTextField textFieldMenge;
+	private JButton butHinzufuegen;
+	private Rezept rezept_neu;
+	private DefaultListModel<String> model;
+	private JTextArea textAreaZubereitung;
+	private JButton butSpeichern;
 
-// ...........Warum muss lisasKochbuch static sein???????	
-//	static Kochbuch lisasKochbuch;
+// ...........Warum muss lisasKochbuch static sein???????
+// static Kochbuch lisasKochbuch;
 	static ArrayList<Rezept> kochbuch = new ArrayList<Rezept>();
 
-//-----------------------------------------------------------------------------------------	
+// -----------------------------------------------------------------------------------------
 	public static void main(String[] args) {
 		Kochbuch lisasKochbuch = new Kochbuch();
 		lisasKochbuch.initGUI();
@@ -83,8 +82,8 @@ public class Kochbuch extends JFrame implements WindowListener {
 		JPanel startPanel = new JPanel();
 		nameStartPanel = "PanelStart";
 		// Eingabepanel
-		// JPanel eingabePanel = erzeugeEingabePanel();
-		EingabePanel eingabePanel = new EingabePanel();
+		JPanel eingabePanel = erzeugeEingabePanel();
+// EingabePanel eingabePanel = new EingabePanel();
 		nameEingabePanel = "PanelEingabe";
 		// Anzeige Rezeptübersicht
 		JPanel rezepteIndexPanel = erzeugeRezepteIndexPanel();
@@ -109,7 +108,7 @@ public class Kochbuch extends JFrame implements WindowListener {
 	}
 // ------------------------------------Ende GUI erzeugen----------------------------------------------
 
-// ------------------------------Menüleiste erzeugen-------------------------------------------------
+	// ------------------------------Menüleiste erzeugen-------------------------------------------------
 	private JMenuBar erzeugeMenuBar() {
 		JMenuBar menueLeiste = new JMenuBar();
 // erzeuge Menü "Kochbuch"
@@ -162,7 +161,9 @@ public class Kochbuch extends JFrame implements WindowListener {
 		menueItemLoeschen = new JMenuItem("Löschen");
 
 // Funktionalität Neu -> Anzeige Eingabepanel
-		menueItemNeu.addActionListener(e -> ((CardLayout) container.getLayout()).show(container, nameEingabePanel));
+		menueItemNeu.addActionListener(e -> {
+			((CardLayout) container.getLayout()).show(container, nameEingabePanel);
+		});
 // Funktionalität Alle anzeigen -> Anzeige Indexpanel über Methode alleRezepteAnzeigen(),
 // d.h. RezeptListModel wird geleert und neu gefüllt
 		menueItemAlleAnzeigen.addActionListener(e -> {
@@ -184,6 +185,77 @@ public class Kochbuch extends JFrame implements WindowListener {
 		return menueRezept;
 	}
 // -------------------------------------Ende Menü Rezept erzeugen-------------------------
+
+	private JPanel erzeugeEingabePanel() {
+
+		// es wird ein Rezept-Objekt erzeugt
+		rezept_neu = new Rezept();
+
+		JPanel eingabePanel = new JPanel();
+		eingabePanel.setSize(350, 200);
+// Rezeptname
+		eingabePanel.add(new JLabel("Rezeptname"));
+		textFieldRezeptName = new JTextField("", 20);
+		eingabePanel.add(textFieldRezeptName);
+// Zutat Name
+		eingabePanel.add(new JLabel("Zutat"));
+// ......scheinbar ist es egal, ob man einen Leerstring oder nichts übergibt
+		textFieldZutat = new JTextField(20);
+		eingabePanel.add(textFieldZutat);
+// Zutat Menge
+		eingabePanel.add(new JLabel("Menge"));
+		textFieldMenge = new JTextField("", 20);
+		eingabePanel.add(textFieldMenge);
+// Hinzufügen
+		butHinzufuegen = new JButton("Zutat hinzufügen");
+		ArrayList<Zutat> zutatenliste = new ArrayList<Zutat>();
+// ich werde bei diesem Buttun nur das Zutatenarray erzeugen, das Rezept kommt erst beim Speichern-Button
+		butHinzufuegen.addActionListener(e -> {
+			// der Rezeptname wird hinzugefügt
+			rezept_neu.setRezeptName(textFieldRezeptName.getText());
+			// Zutatenarraylist wird erzeugt
+			Zutat zutat = new Zutat(textFieldZutat.getText(), textFieldMenge.getText());
+			rezept_neu.zutatenListe.add(zutat);
+			model.addElement(zutat.toString());
+			textFieldZutat.setText("");
+			textFieldMenge.setText("");
+		});
+
+		eingabePanel.add(butHinzufuegen);
+// Zutaten JList
+		model = new DefaultListModel<String>();
+		JList<String> jlist = new JList<>();
+		jlist.setModel(model);
+		JScrollPane scrollZutaten = new JScrollPane(jlist);
+		jlist.setVisibleRowCount(5);
+		jlist.setFixedCellWidth(200);
+		eingabePanel.add(scrollZutaten);
+// hier noch die Zubereitung
+		eingabePanel.add(new JLabel("Zubereitung"));
+		textAreaZubereitung = new JTextArea(20, 20);
+		textAreaZubereitung.setLineWrap(true);
+		eingabePanel.add(textAreaZubereitung);
+
+		// Button speichern
+		butSpeichern = new JButton("Rezept speichern");
+		butSpeichern.addActionListener(e -> {
+			speichern_rezept();
+		});
+		eingabePanel.add(butSpeichern);
+
+// startPanel.validate();
+
+		return eingabePanel;
+	}
+
+	private void speichern_rezept() {
+		// Rezept speichern und Zubereitung hinzufügen
+		rezept_neu.setZubereitung(textAreaZubereitung.getText());
+		kochbuch.add(rezept_neu);
+		textFieldRezeptName.setText("");
+		textAreaZubereitung.setText("");
+		model.clear();
+	}
 
 	// Hier geht es ums Eingabepanel
 	// private JPanel erzeugeEingabePanel() {
@@ -271,6 +343,7 @@ public class Kochbuch extends JFrame implements WindowListener {
 	// return eingabeMaske;
 	// }
 
+// -------------------------------------------------Rezeptindexpanel erzeugen----------------------------------------
 // Hier wird der Rezeptindex erzeugt
 	private JPanel erzeugeRezepteIndexPanel() {
 // .....................Wie soll das Layout sein??
@@ -316,7 +389,7 @@ public class Kochbuch extends JFrame implements WindowListener {
 				System.out.println(namenSuche.getText());
 			}
 		});
-		
+
 		buttonPanel.add(namenSuche);
 
 		JButton rezeptAnzeige = new JButton("Anzeigen");
@@ -324,7 +397,7 @@ public class Kochbuch extends JFrame implements WindowListener {
 // ausgewählt ist
 		rezeptAnzeige.addActionListener(e -> {
 // Rezeptanzeigeseite wird mit Daten des gewählten Rezeptes geöffnet
-//............die Rezeptanzeige funktioniert nicht mehr: hier kommt es zu einer Null-Pointer-Exception			
+// ............die Rezeptanzeige funktioniert nicht mehr: hier kommt es zu einer Null-Pointer-Exception
 			rezeptAnzeigePanel.updatePanel(rezeptJList.getSelectedValue());
 			((CardLayout) container.getLayout()).show(container, nameRezeptAnzeigePanel);
 		});
