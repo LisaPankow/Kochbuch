@@ -282,6 +282,7 @@ public class Kochbuch extends JFrame implements WindowListener {
 	private JPanel erzeugeRezepteIndexPanel() {
 // .....................Wie soll das Layout sein??
 		JPanel rezepteIndexPanel = new JPanel(new BorderLayout());
+
 // Label im Norden
 		JLabel l = new JLabel("Wähle das gewünschte Rezept aus");
 		rezepteIndexPanel.add(l, BorderLayout.NORTH);
